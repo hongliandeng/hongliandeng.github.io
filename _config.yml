@@ -3,13 +3,19 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: hongliandeng's blog
-subtitle:
-description:
-keywords:
+# title: hongliandeng's blog
+# subtitle:
+# description:
+# keywords:
+# author: 连灯
+# language:
+# timezone:
+title: 连灯的博客
+subtitle: 以梦为马,不负韶华
+description: 每个人心中都有一团火，路过的人只看到烟。
 author: 连灯
-language:
-timezone:
+email: 122589667@qq.com
+keywords: "前端,js,jquery,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,html,css,css3,用户体验"
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
@@ -70,8 +76,21 @@ time_format: HH:mm:ss
 per_page: 10
 pagination_dir: page
 
+# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+theme: Yilia
+
+# Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy:
+  type: git
+  repo: git@github.com:hongliandeng/hongliandeng.github.io.git
+  branch: master
+
+
 jsonContent:
-  meta: true
+  meta: false
   pages: false
   posts:
     title: true
@@ -84,18 +103,7 @@ jsonContent:
     updated: false
     comments: false
     link: false
-    permalink: true
+    permalink: false
     excerpt: false
-    categories: true
+    categories: false
     tags: true
-# Extensions
-## Plugins: https://hexo.io/plugins/
-## Themes: https://hexo.io/themes/
-theme: Archer
-
-# Deployment
-## Docs: https://hexo.io/docs/deployment.html
-deploy:
-  type: git
-  repo: git@github.com:hongliandeng/hongliandeng.github.io.git
-  branch: master
