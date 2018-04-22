@@ -7,9 +7,9 @@ tags: [Vue.js]
 前言
 --
 
-> Prop是单向绑定的：当父组件的属性变化时，将传导给子组件，但是反过来不会。这是为了防止子组件无意间修改了父组件的状态，来避免应用的数据流变得难以理解。
-> 另外，每次父组件更新时，子组件的所有 prop 都会更新为最新值。这意味着你不应该在子组件内部改变 prop。如果你这么做了，Vue
-> 会在控制台给出警告：`Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders......`
+Prop是单向绑定的：当父组件的属性变化时，将传导给子组件，但是反过来不会。这是为了防止子组件无意间修改了父组件的状态，来避免应用的数据流变得难以理解。
+另外，每次父组件更新时，子组件的所有 prop 都会更新为最新值。这意味着你不应该在子组件内部改变 prop。如果你这么做了，Vue
+会在控制台给出警告：`Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders......`
 <!-- more -->
 
 那我们应该怎么做呢？
@@ -28,17 +28,17 @@ tags: [Vue.js]
 ---------
 
 需要知道的是
-```
+```html
 <input v-model="something">
 ```
 不过是以下实例的语法糖：
-```
+```html
 <input
   v-bind:value="something"
   v-on:input="something = $event.target.value">
 ```
 所以在组件中使用时，它相当于下面的简写：
-```
+```html
 <custom-input
   v-bind:value="something"
   v-on:input="something = arguments[0]">
@@ -54,12 +54,12 @@ tags: [Vue.js]
 
 父组件：
 
-```
+```html
 <mod-alert v-model="value"></mod-alert>
 ```
 
 子组件：
-```
+```js
 props: ['value'],
 data() {
     return {
@@ -82,7 +82,7 @@ methods: {
 ```
 
 默认情况下，一个组件的 v-model 会使用 value prop 和 input 事件。但是诸如单选框、复选框之类的输入类型可能把 value 用作了别的目的。model 选项可以避免这样的冲突：
-```
+```js
 model: {
     prop: 'newValue', // 自定义v-model接收到的属性名
     event: 'change' // 自定义事件名
@@ -107,11 +107,11 @@ methods: {
     }
 }
 ```
-```
+```html
 <mod-alert v-model="foo" value="someValue"></mod-alert>
 ```
 上述代码等价于：
-```
+```html
 <mod-alert
   :newValue="foo"
   @change="val => { newValue = val }"
@@ -123,11 +123,11 @@ methods: {
 sync修饰符在vue2.0被移除，在vue2.3.0被重新引入。但是这次它只是作为一个编译时的语法糖存在。它会被扩展为一个自动更新父组件属性的 v-on 监听器。
 如下代码：
 
-```
+```html
 <mod-alert :value.sync="value"></mod-alert>
 ```
 会被扩展为：
-```
+```html
 <mod-alert :value="value" @update:foo="val => value = val"></mod-alert>
 ```
 
@@ -135,14 +135,14 @@ sync修饰符在vue2.0被移除，在vue2.3.0被重新引入。但是这次它�
 
 父组件：
 
-```
+```html
 <mod-alert :value.sync="value"></mod-alert>
 ```
 
 子组件：
 
-```
-props: ['value'], //这样就能拿value这个属性名做其他事情了
+```js
+props: ['value'], 
 data() {
     return {
         // 新建props属性副本
