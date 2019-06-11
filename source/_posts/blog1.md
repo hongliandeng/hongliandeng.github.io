@@ -24,12 +24,12 @@ tags: [Git, js]
 
 打开Node.js官网：[Node.js][1]下载最新的安装包，我的是v6.11.0 LST。安装一直点下一步即可。
 装完后打开命令提示符，输入node -v和npm -v，输出版本号表示安装成功。
-![b0472871gy1fqk1ff4kzsj20n90cgweh.jpg][2]
+![](/img/bolg1_1.jpg)
 打开Git官网：[Git][3]下载最新安装包，我的是v2.11.1，安装过程默认即可。同样，装完后打开命令提示符，输入git --version，有输出版本号表示安装成功！（这里我用的是Git Bush）
-![b0472871gy1fqk1l2ci3lj20gj0953z0.jpg][4]
+![](/img/bolg1_2.jpg)
 
 然后登陆GitHub网站：[GitHub][5] (GitHub没有账号的要建一个账号),创建一个仓库。
-![b0472871gy1fqk1tbcob4j20lv0hwgm8.jpg][6]
+![](/img/bolg1_3.jpg)
 
 至此，第一步完成了。
 
@@ -47,7 +47,7 @@ npm install hexo-cli -g
 
  - 命令行输入hexo -v检查是否安装成功
 
-![b0472871gy1fqk20bcq21j20mh0byaa4.jpg][8]
+![](/img/bolg1_4.jpg)
 
  - 初始化Hexo项目
 
@@ -80,7 +80,7 @@ hexo s
 ```
 
 打开 http://localhost:4000 如果出现以下画面：
-![b0472871gy1fqk2bq2uigj20gl098juw.jpg][9]
+![](/img/bolg1_5.jpg)
 
 那恭喜，Hexo本地服务已经运行成功了！
 
