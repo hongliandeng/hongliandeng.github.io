@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Vue," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="背景新项目有一个富文本编辑器的需求，最终选用Vue-quill-editor这个富文本编辑器，但是里面图片上传功能是将图片转为base64格式，这种形式形成的base64字符串非常长，而且无法做上传限制。 我觉得上传方式有必要改成先上传到服务器，再获取图片url的方式。经过调研，引入quill-image-extend-module模块 Vue-Quill-Editor介绍vue-quill-e">
+<meta name="keywords" content="Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue-Quill-Editor富文本编辑器">
+<meta property="og:url" content="http://yoursite.com/2019/06/11/Vue-Quill-Editor/index.html">
+<meta property="og:site_name" content="连灯的博客">
+<meta property="og:description" content="背景新项目有一个富文本编辑器的需求，最终选用Vue-quill-editor这个富文本编辑器，但是里面图片上传功能是将图片转为base64格式，这种形式形成的base64字符串非常长，而且无法做上传限制。 我觉得上传方式有必要改成先上传到服务器，再获取图片url的方式。经过调研，引入quill-image-extend-module模块 Vue-Quill-Editor介绍vue-quill-e">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-11T06:17:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue-Quill-Editor富文本编辑器">
+<meta name="twitter:description" content="背景新项目有一个富文本编辑器的需求，最终选用Vue-quill-editor这个富文本编辑器，但是里面图片上传功能是将图片转为base64格式，这种形式形成的base64字符串非常长，而且无法做上传限制。 我觉得上传方式有必要改成先上传到服务器，再获取图片url的方式。经过调研，引入quill-image-extend-module模块 Vue-Quill-Editor介绍vue-quill-e">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/11/Vue-Quill-Editor/"/>
+
+
+
+
+
+  <title>Vue-Quill-Editor富文本编辑器 | 连灯的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">连灯的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/11/Vue-Quill-Editor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="连灯">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/img/touxiang.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="连灯的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vue-Quill-Editor富文本编辑器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-11T13:54:33+08:00">
+                2019-06-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>新项目有一个富文本编辑器的需求，最终选用Vue-quill-editor这个富文本编辑器，但是里面图片上传功能是将图片转为base64格式，这种形式形成的base64字符串非常长，而且无法做上传限制。</p>
+<p>我觉得上传方式有必要改成先上传到服务器，再获取图片url的方式。经过调研，引入quill-image-extend-module模块</p>
+<h2 id="Vue-Quill-Editor介绍"><a href="#Vue-Quill-Editor介绍" class="headerlink" title="Vue-Quill-Editor介绍"></a>Vue-Quill-Editor介绍</h2><p>vue-quill-editor是基于 Quill、适用于 Vue 的富文本编辑器，支持服务端渲染和单页应用</p>
+<p>文档：<a href="https://www.npmjs.com/package/vue-quill-editor" target="_blank" rel="noopener">https://www.npmjs.com/package/vue-quill-editor</a></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vue-quill-editor --save-dev</span><br></pre></td></tr></table></figure>
+<p>安装相关依赖：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install quill --save-dev</span><br></pre></td></tr></table></figure></p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>html部分<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">quill-editor</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">v-model</span>=<span class="string">"content"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">:options</span>=<span class="string">"editorOption"</span> </span></span><br><span class="line"><span class="tag">    @<span class="attr">blur</span>=<span class="string">"onEditorBlur($event)"</span> @<span class="attr">focus</span>=<span class="string">"onEditorFocus($event)"</span></span></span><br><span class="line"><span class="tag">    @<span class="attr">change</span>=<span class="string">"onEditorChange($event)"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">quill-editor</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>js部分<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; quillEditor &#125; <span class="keyword">from</span> <span class="string">"vue-quill-editor"</span>; <span class="comment">//调用编辑器</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'quill/dist/quill.core.css'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'quill/dist/quill.snow.css'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'quill/dist/quill.bubble.css'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置部分</span></span><br><span class="line">editorOption: &#123;</span><br><span class="line">  modules:&#123;</span><br><span class="line">  	<span class="comment">// 工具栏设置</span></span><br><span class="line">    toolbar:[</span><br><span class="line">      [<span class="string">'bold'</span>, <span class="string">'italic'</span>, <span class="string">'underline'</span>, <span class="string">'strike'</span>],    <span class="comment">//加粗，斜体，下划线，删除线</span></span><br><span class="line">      [<span class="string">'blockquote'</span>, <span class="string">'code-block'</span>],     <span class="comment">//引用，代码块</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      [&#123; <span class="string">'header'</span>: <span class="number">1</span> &#125;, &#123; <span class="string">'header'</span>: <span class="number">2</span> &#125;],        <span class="comment">// 标题，键值对的形式；1、2表示字体大小</span></span><br><span class="line">      [&#123; <span class="string">'list'</span>: <span class="string">'ordered'</span>&#125;, &#123; <span class="string">'list'</span>: <span class="string">'bullet'</span> &#125;],     <span class="comment">//列表</span></span><br><span class="line">      [&#123; <span class="string">'script'</span>: <span class="string">'sub'</span>&#125;, &#123; <span class="string">'script'</span>: <span class="string">'super'</span> &#125;],   <span class="comment">// 上下标</span></span><br><span class="line">      [&#123; <span class="string">'indent'</span>: <span class="string">'-1'</span>&#125;, &#123; <span class="string">'indent'</span>: <span class="string">'+1'</span> &#125;],     <span class="comment">// 缩进</span></span><br><span class="line">      [&#123; <span class="string">'direction'</span>: <span class="string">'rtl'</span> &#125;],             <span class="comment">// 文本方向</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      [&#123; <span class="string">'size'</span>: [<span class="string">'small'</span>, <span class="literal">false</span>, <span class="string">'large'</span>, <span class="string">'huge'</span>] &#125;], <span class="comment">// 字体大小</span></span><br><span class="line">      [&#123; <span class="string">'header'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="literal">false</span>] &#125;],     <span class="comment">//几级标题</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      [&#123; <span class="string">'color'</span>: [] &#125;, &#123; <span class="string">'background'</span>: [] &#125;],     <span class="comment">// 字体颜色，字体背景颜色</span></span><br><span class="line">      [&#123; <span class="string">'font'</span>: [] &#125;],     <span class="comment">//字体</span></span><br><span class="line">      [&#123; <span class="string">'align'</span>: [] &#125;],    <span class="comment">//对齐方式</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      [<span class="string">'clean'</span>],    <span class="comment">//清除字体样式</span></span><br><span class="line">      [<span class="string">'image'</span>,<span class="string">'video'</span>]    <span class="comment">//上传图片、上传视频</span></span><br><span class="line"></span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  theme:<span class="string">'snow'</span> <span class="comment">// 主题设置，默认snow</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="图片上传部分改造"><a href="#图片上传部分改造" class="headerlink" title="图片上传部分改造"></a>图片上传部分改造</h2><p>这部分借助quill-image-extend-module这个模块。</p>
+<p>quill-image-extend-module是vue-quill-editor的增强模块，主要功能是：</p>
+<ul>
+<li><p>提供图片上传到服务器的功能</p>
+</li>
+<li><p>复制插入</p>
+</li>
+<li><p>拖拽插入</p>
+</li>
+<li><p>显示上传进度</p>
+</li>
+<li><p>显示上传成功或者失败</p>
+</li>
+<li><p>支持与其他模块一起使用（例如调整图片大小）</p>
+</li>
+</ul>
+<h3 id="安装quill-image-extend-module"><a href="#安装quill-image-extend-module" class="headerlink" title="安装quill-image-extend-module"></a>安装quill-image-extend-module</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install quill-image-extend-<span class="built_in">module</span> --save-dev</span><br></pre></td></tr></table></figure>
+<h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;quillEditor, Quill&#125; <span class="keyword">from</span> <span class="string">'vue-quill-editor'</span></span><br><span class="line"><span class="keyword">import</span> &#123;container, ImageExtend, QuillWatch&#125; <span class="keyword">from</span> <span class="string">'quill-image-extend-module'</span></span><br><span class="line">Quill.register(<span class="string">'modules/ImageExtend'</span>, ImageExtend)</span><br><span class="line"></span><br><span class="line">quill-image-extend-<span class="built_in">module</span>所有可配置项</span><br><span class="line"></span><br><span class="line">modules: &#123;</span><br><span class="line">   ImageExtend: &#123;  <span class="comment">// 如果不作设置，即&#123;&#125;  则依然开启复制粘贴功能且以base64插入 </span></span><br><span class="line">       name: <span class="string">'img'</span>,  <span class="comment">// 图片参数名</span></span><br><span class="line">       size: <span class="number">3</span>,  <span class="comment">// 可选参数 图片大小，单位为M，1M = 1024kb</span></span><br><span class="line">       action: updateUrl,  <span class="comment">// 服务器地址, 如果action为空，则采用base64插入图片</span></span><br><span class="line">       <span class="comment">// response 为一个函数用来获取服务器返回的具体图片地址</span></span><br><span class="line">       <span class="comment">// 例如服务器返回&#123;code: 200; data:&#123; url: 'baidu.com'&#125;&#125;</span></span><br><span class="line">       <span class="comment">// 则 return res.data.url</span></span><br><span class="line">       response: <span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">           <span class="keyword">return</span> res.info</span><br><span class="line">       &#125;,</span><br><span class="line">       headers: <span class="function">(<span class="params">xhr</span>) =&gt;</span> &#123;</span><br><span class="line">       <span class="comment">// xhr.setRequestHeader('myHeader','myValue')</span></span><br><span class="line">       &#125;,  <span class="comment">// 可选参数 设置请求头部</span></span><br><span class="line">       sizeError: <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;,  <span class="comment">// 图片超过大小的回调</span></span><br><span class="line">       start: <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;,  <span class="comment">// 可选参数 自定义开始上传触发事件</span></span><br><span class="line">       end: <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;,  <span class="comment">// 可选参数 自定义上传结束触发的事件，无论成功或者失败</span></span><br><span class="line">       error: <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;,  <span class="comment">// 可选参数 上传失败触发的事件</span></span><br><span class="line">       success: <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;,  <span class="comment">// 可选参数  上传成功触发的事件</span></span><br><span class="line">       change: <span class="function">(<span class="params">xhr, formData</span>) =&gt;</span> &#123;</span><br><span class="line">       <span class="comment">// xhr.setRequestHeader('myHeader','myValue')</span></span><br><span class="line">       <span class="comment">// formData.append('token', 'myToken')</span></span><br><span class="line">       &#125; <span class="comment">// 可选参数 每次选择图片触发，也可用来设置头部，但比headers多了一个参数，可设置formData</span></span><br><span class="line">   &#125;,</span><br><span class="line">   toolbar: &#123;  <span class="comment">// 如果不上传图片到服务器，此处不必配置</span></span><br><span class="line">       container: container,  <span class="comment">// container为工具栏，此次引入了全部工具栏，也可自行配置</span></span><br><span class="line">       handlers: &#123;</span><br><span class="line">           <span class="string">'image'</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;  <span class="comment">// 劫持原来的图片点击按钮事件</span></span><br><span class="line">               QuillWatch.emit(<span class="keyword">this</span>.quill.id)</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体代码实现<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">editorOption = &#123;</span><br><span class="line">    modules: &#123;</span><br><span class="line">      ImageExtend: &#123;</span><br><span class="line">        loading: <span class="literal">true</span>, <span class="comment">// 是否显示加载动画</span></span><br><span class="line">        name: <span class="string">'img'</span>,</span><br><span class="line">        size: <span class="number">3</span>,</span><br><span class="line">        action: <span class="string">''</span>, <span class="comment">// 服务器地址</span></span><br><span class="line">        response: <span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">return</span> res.data.originalLink <span class="comment">// 获取服务器返回的具体图片地址</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment">// 设置上传Venus的请求头部信息</span></span><br><span class="line">        headers: <span class="function">(<span class="params">xhr</span>) =&gt;</span> &#123;</span><br><span class="line">          xhr.setRequestHeader(<span class="string">'Authorization'</span>, <span class="keyword">this</span>.token.Authorization)</span><br><span class="line">          xhr.setRequestHeader(<span class="string">'time'</span>, <span class="keyword">this</span>.token.time)</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment">// 上传结束时重新获取鉴权信息</span></span><br><span class="line">        end: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">          getBAAuthorization().then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.token.Authorization = res.authorization</span><br><span class="line">            <span class="keyword">this</span>.token.time = res.time</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'getbaa'</span>)</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="keyword">this</span>.token)</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      toolbar: &#123;</span><br><span class="line">        container: [</span><br><span class="line">            [<span class="string">'bold'</span>, <span class="string">'italic'</span>, <span class="string">'underline'</span>, <span class="string">'strike'</span>],</span><br><span class="line">            [<span class="string">'blockquote'</span>, <span class="string">'code-block'</span>],</span><br><span class="line">            [&#123; <span class="string">'header'</span>: <span class="number">1</span> &#125;, &#123; <span class="string">'header'</span>: <span class="number">2</span> &#125;],</span><br><span class="line">            [&#123; <span class="string">'list'</span>: <span class="string">'ordered'</span> &#125;, &#123; <span class="string">'list'</span>: <span class="string">'bullet'</span> &#125;],</span><br><span class="line">            [&#123; <span class="string">'script'</span>: <span class="string">'sub'</span> &#125;, &#123; <span class="string">'script'</span>: <span class="string">'super'</span> &#125;],</span><br><span class="line">            [&#123; <span class="string">'indent'</span>: <span class="string">'-1'</span> &#125;, &#123; <span class="string">'indent'</span>: <span class="string">'+1'</span> &#125;],</span><br><span class="line">            [&#123; <span class="string">'direction'</span>: <span class="string">'rtl'</span> &#125;],</span><br><span class="line">            [&#123; <span class="string">'align'</span>: [] &#125;],</span><br><span class="line">            [&#123; <span class="string">'size'</span>: [<span class="string">'small'</span>, <span class="literal">false</span>, <span class="string">'large'</span>, <span class="string">'huge'</span>] &#125;],</span><br><span class="line">            [&#123; <span class="string">'header'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="literal">false</span>] &#125;],</span><br><span class="line">            [&#123; <span class="string">'color'</span>: [] &#125;, &#123; <span class="string">'background'</span>: [] &#125;],</span><br><span class="line">            [&#123; <span class="string">'font'</span>: [] &#125;],</span><br><span class="line">            [<span class="string">'link'</span>, <span class="string">'image'</span>, <span class="string">'video'</span>]</span><br><span class="line">        ],</span><br><span class="line">        handlers: &#123;</span><br><span class="line">        <span class="comment">// 劫持原来的图片点击按钮事件</span></span><br><span class="line">          <span class="string">'image'</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">            QuillWatch.emit(<span class="keyword">this</span>.quill.id)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  created() &#123;</span><br><span class="line">  实例创建时获取上传所需的鉴权信息</span><br><span class="line">    getBAAuthorization().then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.token.Authorization = res.authorization</span><br><span class="line">      <span class="keyword">this</span>.token.time = res.time</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li><p>原本打算在start的回调中获取鉴权信息，但是发现无法写入头部，后改为先获取一次鉴权信息，然后在图片上传完成再去更新鉴权信息。</p>
+</li>
+<li><p>官方文档中有写到可以在change回调中写入头部信息，但是测试发现报错，这个可能是bug，需要再测试一下。</p>
+</li>
+<li><p>服务器返回的数据格式可能不相同</p>
+</li>
+</ol>
+<p>因此在配置中，你必须如下操作<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 你必须把返回的数据中所包含的图片地址 return 回去</span></span><br><span class="line"> respnse: <span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> res.info  <span class="comment">// 这里切记要return回你的图片地址</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<ol start="4">
+<li>工具栏增加文本描述</li>
+</ol>
+<p>可以添加after<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.ql-formats</span>&gt;<span class="selector-class">.ql-font</span> &#123;</span><br><span class="line">  <span class="attribute">margin-left</span>: <span class="number">35px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.ql-formats</span>&gt;<span class="selector-class">.ql-font</span><span class="selector-pseudo">::after</span> &#123;</span><br><span class="line">  <span class="attribute">content</span>: <span class="string">'字体：'</span>;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">left</span>: -<span class="number">35px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/img/WechatIMG8.jpeg" alt="连灯 WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vue/" rel="tag"># Vue</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/08/es6Module与CommonJS/" rel="next" title="es6Module与CommonJS">
+                <i class="fa fa-chevron-left"></i> es6Module与CommonJS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/img/touxiang.jpg"
+                alt="连灯" />
+            
+              <p class="site-author-name" itemprop="name">连灯</p>
+              <p class="site-description motion-element" itemprop="description">每个人心中都有一团火，路过的人只看到烟。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vue-Quill-Editor介绍"><span class="nav-number">2.</span> <span class="nav-text">Vue-Quill-Editor介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">2.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">2.2.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图片上传部分改造"><span class="nav-number">3.</span> <span class="nav-text">图片上传部分改造</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装quill-image-extend-module"><span class="nav-number">3.1.</span> <span class="nav-text">安装quill-image-extend-module</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引入"><span class="nav-number">3.2.</span> <span class="nav-text">引入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意事项"><span class="nav-number">4.</span> <span class="nav-text">注意事项</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">连灯</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
