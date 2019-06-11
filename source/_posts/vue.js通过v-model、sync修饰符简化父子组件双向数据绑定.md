@@ -2,7 +2,7 @@
 title: vue.js通过v-model、sync修饰符简化父子组件双向数据绑定
 date: 2018-04-20 23:18:12
 toc: true
-tags: [Vue.js]
+tags: [Vue]
 ---
 前言
 --

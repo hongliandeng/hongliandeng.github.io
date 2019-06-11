@@ -2,7 +2,7 @@
 title: vue.js滚动到底部加载数据插件infiniteScroll
 date: 2018-04-22 23:18:12
 toc: true
-tags: [Vue.js]
+tags: [Vue]
 ---
 
 ## 安装

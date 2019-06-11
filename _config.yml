@@ -11,7 +11,7 @@
 # language:
 # timezone:
 title: 连灯的博客
-subtitle: 1
+subtitle: 
 description: 每个人心中都有一团火，路过的人只看到烟。
 author: 连灯
 email: 122589667@qq.com
@@ -79,7 +79,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: Yilia
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

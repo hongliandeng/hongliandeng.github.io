@@ -2,7 +2,7 @@
 title: axios总结与封装
 date: 2018-04-27 22:18:12
 toc: true
-tags: [Vue.js]
+tags: [Vue]
 ---
 
 ## npm安装

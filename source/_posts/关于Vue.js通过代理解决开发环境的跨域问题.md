@@ -2,7 +2,7 @@
 title: 关于Vue.js通过代理解决开发环境的跨域问题
 date: 2018-04-23 10:00:12
 toc: true
-tags: [Vue.js]
+tags: [Vue]
 ---
 
 ## 何为代理？
@@ -12,7 +12,7 @@ tags: [Vue.js]
 <!-- more -->
 ## 实现
 
-在Vue项目下=>config=>index.js=>module.exports=>dev对象中有一个`proxyTable`对象,实现代码如下：
+在Vue项目下=>config=>index.js=>module.exports=>dev对象中有一个`proxyTable`对象,实现代码如下：(vue3.0直接写在vue.config.js里面：devServer=>proxy)
 
 ```js
 proxyTable: {

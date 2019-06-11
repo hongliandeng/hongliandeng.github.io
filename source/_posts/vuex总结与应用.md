@@ -2,7 +2,7 @@
 title: vuex总结与应用
 date: 2018-05-09 10:18:12
 toc: true
-tags: [Vue.js]
+tags: [Vue]
 ---
 ## 原理
 

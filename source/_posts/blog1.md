@@ -2,7 +2,7 @@
 title: 基于Hexo搭建个人博客并发布到GitHub Pages
 date: 2018-04-19 22:18:12
 toc: true
-tags: [Git,Hexo]
+tags: [Git, js]
 ---
 前言
 --
