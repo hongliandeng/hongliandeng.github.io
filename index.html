@@ -94,7 +94,9 @@
 
 
 <script type="text/javascript" id="hexo.configurations">
-  console.log('localStorage:' + localStorage.getItem("loginInfo"))
+  localStorage.setItem("test", "test")
+  console.log('localStorage-test:' + localStorage.getItem("loginInfo"))
+  console.log('localStorage-loginInfo:' + localStorage.getItem("loginInfo"))
   console.log('cookie:' + document.cookie)
   var NexT = window.NexT || {};
   var CONFIG = {
